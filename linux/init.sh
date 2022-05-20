@@ -2,4 +2,4 @@
 
 cd $HOME/easy-free5gc/linux
 
-./free5gc-dependencies.sh
+sudo ./free5gc-dependencies.sh

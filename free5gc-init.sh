@@ -6,7 +6,7 @@ if [ $EUID -eq 0 ]; then
     echo "Creating '$USER' user..."
     useradd $USER -m -s /bin/bash
     echo -e "$USER:admin" | chpasswd
-    echo -e "$USER  ALL=(ALL:ALL) ALL" >> /etc/sudoers
+    echo -e "$USER ALL = NOPASSWD : ALL" >> /etc/sudoers
 
     apt update
     apt install git net-tools
