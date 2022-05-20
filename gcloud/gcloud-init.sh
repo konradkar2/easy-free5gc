@@ -55,4 +55,6 @@ gcloud compute instances create worker-0 \
     --tags $NAME,worker
 
 echo -e "\nAll done!"
-echo -e "To connect via SSH to VM execute:\ngcloud compute ssh controller-0\ngcloud compute ssh worker-0"
+echo -e "To connect via SSH to VM execute:\n
+  gcloud compute ssh controller-0
+  gcloud compute ssh worker-0"
