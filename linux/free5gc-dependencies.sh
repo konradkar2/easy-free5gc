@@ -5,7 +5,7 @@ echo "installing Go..."
 
 wget https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz
 sudo tar -C /usr/local -zxvf go1.14.4.linux-amd64.tar.gz
-mkdir -p ~/go/{bin,pkg,src}
+mkdir -p ~/go/{bin,pkg,src} > /dev/null
 # The following assume that your shell is bash
 echo 'export GOPATH=$HOME/go' >> ~/.bashrc
 echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
