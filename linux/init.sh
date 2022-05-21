@@ -1,5 +1,10 @@
 #!/bin/bash
 
+echo "init.sh"
+
+
 cd $HOME/easy-free5gc/linux
 
-sudo ./free5gc-dependencies.sh
+./free5gc-dependencies.sh
+
+./kubernetes.sh

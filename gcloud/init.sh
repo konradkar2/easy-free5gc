@@ -9,9 +9,10 @@ if [ $EUID -eq 0 ]; then
     echo -e "$USER ALL = NOPASSWD : ALL" >> /etc/sudoers
 
     apt update
-    apt install git net-tools
+    apt install git
 
     cd /home/$USER/
+    echo "Removing easy-free5gc repository if it exists..."
     rm -rf easy-free5gc 2> /dev/null
     git clone https://github.com/konradkar2/easy-free5gc
 
@@ -25,7 +26,4 @@ if [ $EUID -eq 0 ]; then
 fi
 
 echo "Should be run as root"
-
 exit -1
-
-
