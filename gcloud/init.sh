@@ -7,6 +7,7 @@ if [ $EUID -eq 0 ]; then
     if [[ -f $FLAG ]]; then
         echo "Already configured, exiting"
         exit
+    fi
 
     #set up flag so the script runs only first boot
     touch "$FLAG"
