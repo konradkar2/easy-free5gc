@@ -2,6 +2,15 @@
 if [ $EUID -eq 0 ]; then
     echo "Setting up as a root..."
 
+    echo "Checking if already configured"
+    FLAG="/var/log/easy-free5gc"
+    if [[ -f $FLAG ]]; then
+        echo "Already configured, exiting"
+        exit
+
+    #set up flag so the script runs only first boot
+    touch "$FLAG"
+
     USER="free5gc-user"
     echo "Creating '$USER' user..."
     useradd $USER -m -s /bin/bash

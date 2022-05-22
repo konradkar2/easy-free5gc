@@ -17,3 +17,5 @@ sudo awk -i inplace 'sub("TO_BE_REPLACED_KEY","eth"cnt+0, $0){cnt++}1' $NETPLAN_
 sudo awk -i inplace 'sub("TO_BE_REPLACED_VALUE_SET_NAME","eth"cnt+0, $0){cnt++}1' $NETPLAN_CONFIG
 
 sudo netplan apply /etc/netplan/50-cloud-init.yaml
+
+sleep 3
