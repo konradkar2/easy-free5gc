@@ -4,12 +4,13 @@ if [ $EUID -eq 0 ]; then
 
     echo "Checking if already configured"
     FLAG="/var/log/easy-free5gc"
+    #Delete this if you want to manually re-run the script
     if [[ -f $FLAG ]]; then
         echo "Already configured, exiting"
         exit
     fi
 
-    #set up flag so the script runs only first boot
+    #set up flag so the script executes only on a first boot
     touch "$FLAG"
 
     USER="free5gc-user"

@@ -19,7 +19,7 @@ gcloud compute firewall-rules create $NAME-allow-internal \
 
 echo -e "\nCreating external traffic firewall rule..."
 gcloud compute firewall-rules create $NAME-allow-external \
-  --allow tcp:22,tcp:6443,icmp \
+  --allow tcp:22,tcp:6443,tcp:8001,icmp \
   --network $NAME \
   --source-ranges 0.0.0.0/0
 
