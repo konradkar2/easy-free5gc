@@ -27,5 +27,9 @@ git clone https://github.com/k8snetworkplumbingwg/multus-cni
 echo -e "\nApplying multus-daemonset-yml..."
 kubectl apply -f $HOME/multus-cni/deployments/multus-daemonset.yml
 
+echo "Creating persistent volume..."
+kubectl create ns
+kubectl apply -f volume.yml
+
 echo "Generating join token..."
 kubeadm token create --print-join-command
