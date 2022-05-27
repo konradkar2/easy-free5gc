@@ -2,6 +2,11 @@
 
 echo "controller/init.sh"
 
+echo "Installing helm..."
+cd $HOME/Download
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
 
 echo "Starting kubeadm cluster..."
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --upload-certs
@@ -21,3 +26,6 @@ git clone https://github.com/k8snetworkplumbingwg/multus-cni
 
 echo -e "\nApplying multus-daemonset-yml..."
 kubectl apply -f $HOME/multus-cni/deployments/multus-daemonset.yml
+
+echo "Generating join token..."
+kubeadm token create --print-join-command
