@@ -32,7 +32,7 @@ if [ $EUID -eq 0 ]; then
     chmod 777 easy-free5gc -R
 
     #run new bash process as USER
-    exec sudo -u "$USER" -i easy-free5gc/linux/init.sh -- "$@"
+    exec sudo -u "$USER" -i easy-free5gc/common/init.sh -- "$@"
 
     exit
 fi
