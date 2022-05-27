@@ -13,7 +13,3 @@ sudo apt install yq -y
 ##install build-essential
 sudo apt install build-essential -y
 
-cd $HOME
-
-echo -e "\nFetching multus-cni..."
-git clone https://github.com/k8snetworkplumbingwg/multus-cni

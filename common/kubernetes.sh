@@ -36,8 +36,5 @@ sudo containerd config default | sudo tee /etc/containerd/config.toml
 # Restart containerd
 sudo systemctl restart containerd
 
-#copy kubeadm config so it can be used by kubectl
-mkdir -p $HOME/.kube
-sudo cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
 
