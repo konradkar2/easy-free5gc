@@ -1,5 +1,6 @@
 #!/bin/bash
 if [ $EUID -eq 0 ]; then
+    echo "gcloud/init.sh"
     echo "Setting up as a root..."
 
     echo "Checking if already configured"

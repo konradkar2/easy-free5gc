@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "kubernetes.sh"
+echo "common/kubernetes.sh"
 
 cd $HOME
 
@@ -31,6 +31,13 @@ sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
 
-echo -e "\nFetching repositories..."
-git clone https://github.com/Orange-OpenSource/towards5gs-helm.git
-git clone https://github.com/k8snetworkplumbingwg/multus-cni
+# Regenerate containerd config, somehow it gets corrupted
+sudo containerd config default | sudo tee /etc/containerd/config.toml
+# Restart containerd
+sudo systemctl restart containerd
+
+#copy kubeadm config so it can be used by kubectl
+mkdir -p $HOME/.kube
+sudo cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
