@@ -51,7 +51,7 @@ gcloud compute instances create worker-0 \
     --image-project ubuntu-os-cloud \
     --machine-type e2-standard-2 \
     --metadata-from-file=startup-script=init.sh \
-    --private-network-ip 10.240.0.2, 10.0.0.12 \
+    --private-network-ip 10.0.0.12 \
     --scopes compute-rw,storage-ro,service-management,service-control,logging-write,monitoring \
     --subnet $SUBNET_NAME \
     --tags $NAME,worker
