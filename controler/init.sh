@@ -14,4 +14,4 @@ echo "cloning towards5gs-helm..."
 cd $HOME
 git clone https://github.com/Orange-OpenSource/towards5gs-helm.git
 
-./free5gc-setup.sh
+$HOME/easy-free5gc/controler/free5gc-setup.sh
