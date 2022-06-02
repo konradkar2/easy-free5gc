@@ -31,5 +31,3 @@ echo "Creating persistent volume..."
 kubectl create ns free5gc
 kubectl apply -f $HOME/easy-free5gc/controler/volume.yml
 
-echo "Generating join token..."
-kubeadm token create --print-join-command

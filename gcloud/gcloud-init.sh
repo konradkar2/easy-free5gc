@@ -49,7 +49,7 @@ gcloud compute instances create worker-0 \
     --can-ip-forward \
     --image-family ubuntu-2004-lts \
     --image-project ubuntu-os-cloud \
-    --machine-type e2-standard-2 \
+    --machine-type e2-standard-4 \
     --metadata-from-file=startup-script=init.sh \
     --private-network-ip 10.0.0.12 \
     --scopes compute-rw,storage-ro,service-management,service-control,logging-write,monitoring \
