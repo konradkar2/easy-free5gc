@@ -1,60 +1,58 @@
 #!/bin/bash
 
 NAME="free5gc-project"
-SUBNET_NAME="$NAME-kubernetes"
+
+NET_INTERNAL="$NAME-kubernetes-internal"
+NET_DN="$NAME-kubernetes-dn"
+
+SUBNET_INTERNAL="$NET_INTERNAL-subnet"
+SUBNET_DN="$NET_DN-subnet"
 
 echo "Creating VPC network..."
-gcloud compute networks create $NAME --subnet-mode custom
+gcloud compute networks create $NET_INTERNAL --subnet-mode custom
+gcloud compute networks create $NET_DN --subnet-mode custom
 
 echo -e "\nCreating subnet..."
-gcloud compute networks subnets create $SUBNET_NAME \
-  --network $NAME \
+gcloud compute networks subnets create $SUBNET_INTERNAL \
+  --network $NET_INTERNAL \
   --range 192.168.10.0/24
 
+gcloud compute networks subnets create $SUBNET_DN \
+  --network $NET_DN \
+  --range 192.168.11.0/24
+
 echo -e "\nCreating internal traffic firewall rule..."
-gcloud compute firewall-rules create $NAME-allow-internal \
+gcloud compute firewall-rules create $NET_INTERNAL-allow-internal \
   --allow all \
-  --network $NAME \
+  --network $NET_INTERNAL \
   --source-ranges 192.168.10.0/24
 
-echo -e "\nCreating external traffic firewall rule..."
-gcloud compute firewall-rules create $NAME-allow-external \
+gcloud compute firewall-rules create $NET_DN-allow-internal \
   --allow all \
-  --network $NAME \
+  --network $NET_DN \
+  --source-ranges 192.168.11.0/24
+
+echo -e "\nCreating external traffic firewall rule..."
+gcloud compute firewall-rules create $NET_INTERNAL-allow-external \
+  --allow all \
+  --network $NET_INTERNAL \
+  --source-ranges 0.0.0.0/0
+
+gcloud compute firewall-rules create $NET_DN-allow-external \
+  --allow all \
+  --network $NET_DN \
   --source-ranges 0.0.0.0/0
 
 echo -e "\nfirewall rules:"
-gcloud compute firewall-rules list --filter="network:$NAME"
+gcloud compute firewall-rules list --filter="network:$NAME*"
 
 echo -e "\nCreating static IP address:"
 gcloud compute addresses create $NAME \
   --region $(gcloud config get-value compute/region)
 
-echo -e "\nCreating kubernetes control-plane VM"
-gcloud compute instances create controller-0 \
-   --boot-disk-size 100GB \
-   --can-ip-forward \
-   --image-family ubuntu-2004-lts \
-   --image-project ubuntu-os-cloud \
-   --machine-type e2-standard-2 \
-   --metadata-from-file=startup-script=init.sh \
-   --private-network-ip 192.168.10.2 \
-   --scopes compute-rw,storage-ro,service-management,service-control,logging-write,monitoring \
-   --subnet $SUBNET_NAME \
-   --tags $NAME,controller
 
-echo -e "\nCreating kubernetes worker VM"
-gcloud compute instances create worker-0 \
-    --boot-disk-size 200GB \
-    --can-ip-forward \
-    --image-family ubuntu-2004-lts \
-    --image-project ubuntu-os-cloud \
-    --machine-type e2-standard-4 \
-    --metadata-from-file=startup-script=init.sh \
-    --private-network-ip 192.168.10.12 \
-    --scopes compute-rw,storage-ro,service-management,service-control,logging-write,monitoring \
-    --subnet $SUBNET_NAME \
-    --tags $NAME,worker
+./vms/init.sh
+
 
 echo -e "\nAll done!"
 echo -e "To connect via SSH to VM execute:\n

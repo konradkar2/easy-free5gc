@@ -1,13 +1,15 @@
 #!/bin/bash
 
 NAME="free5gc-project"
-SUBNET_NAME="$NAME-kubernetes"
 
-echo "Removing controller and worker..."
-gcloud -q compute instances delete \
-  controller-0 \
-  worker-0  \
-  --zone $(gcloud config get-value compute/zone)
+NET_INTERNAL="$NAME-kubernetes-internal"
+NET_DN="$NAME-kubernetes-dn"
+
+SUBNET_INTERNAL="$NET_INTERNAL-subnet"
+SUBNET_DN="$NET_DN-subnet"
+
+
+./vms/cleanup.sh
 
 echo "Removing static address..."
 gcloud -q compute addresses delete $NAME \
@@ -15,12 +17,18 @@ gcloud -q compute addresses delete $NAME \
 
 echo "Removing firewall rules..."
 gcloud -q compute firewall-rules delete \
-  $NAME-allow-internal \
-  $NAME-allow-external
+  $NET_INTERNAL-allow-internal \
+  $NET_INTERNAL-allow-external \
+  $NET_DN-allow-internal \
+  $NET_DN-allow-external \
 
 echo "Removing VPC subnet..."
-gcloud -q compute networks subnets delete $SUBNET_NAME
+gcloud -q compute networks subnets delete \
+  $SUBNET_INTERNAL \
+  $SUBNET_DN
 
 echo "Removing VPC network..."
-gcloud -q compute networks delete $NAME
+gcloud -q compute networks delete \
+  $NET_INTERNAL \
+  $NET_DN \
 
