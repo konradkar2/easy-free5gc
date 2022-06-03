@@ -20,7 +20,7 @@ yq e -i '.global.n6network.excludeIP|="192.168.10.12"' values.yaml
 yq e -i '.upf.n6if.ipAddress|="192.168.10.100"' values.yaml
 
 
-cd ..
+cd $HOME/towards5gs-helm/charts/
 
 helm -n free5gc install 3.0.6 ./free5gc/
-helm -n free5gc install 3.0.6.ran ./euransim/
+helm -n free5gc install 3.0.6.ran ./ueransim/
