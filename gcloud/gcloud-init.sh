@@ -9,13 +9,13 @@ gcloud compute networks create $NAME --subnet-mode custom
 echo -e "\nCreating subnet..."
 gcloud compute networks subnets create $SUBNET_NAME \
   --network $NAME \
-  --range 10.0.0.0/8
+  --range 192.168.10.0/24
 
 echo -e "\nCreating internal traffic firewall rule..."
 gcloud compute firewall-rules create $NAME-allow-internal \
   --allow all \
   --network $NAME \
-  --source-ranges 10.0.0.0/8
+  --source-ranges 192.168.10.0/24
 
 echo -e "\nCreating external traffic firewall rule..."
 gcloud compute firewall-rules create $NAME-allow-external \
@@ -38,7 +38,7 @@ gcloud compute instances create controller-0 \
    --image-project ubuntu-os-cloud \
    --machine-type e2-standard-2 \
    --metadata-from-file=startup-script=init.sh \
-   --private-network-ip 10.240.0.1 \
+   --private-network-ip 192.168.10.2 \
    --scopes compute-rw,storage-ro,service-management,service-control,logging-write,monitoring \
    --subnet $SUBNET_NAME \
    --tags $NAME,controller
@@ -51,7 +51,7 @@ gcloud compute instances create worker-0 \
     --image-project ubuntu-os-cloud \
     --machine-type e2-standard-4 \
     --metadata-from-file=startup-script=init.sh \
-    --private-network-ip 10.0.0.12 \
+    --private-network-ip 192.168.10.12 \
     --scopes compute-rw,storage-ro,service-management,service-control,logging-write,monitoring \
     --subnet $SUBNET_NAME \
     --tags $NAME,worker
