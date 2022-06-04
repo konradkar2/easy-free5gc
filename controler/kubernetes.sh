@@ -9,7 +9,7 @@ chmod 700 get_helm.sh
 ./get_helm.sh
 
 echo "Starting kubeadm cluster..."
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --upload-certs
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --upload-certs --apiserver-advertise-address=192.168.10.2
 
 #copy kubeadm config so it can be used by kubectl
 mkdir -p $HOME/.kube
