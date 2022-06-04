@@ -15,9 +15,9 @@ echo 'export PATH=$PATH:$GOPATH/bin:$GOROOT/bin' >> ~/.bashrc
 echo 'export GO111MODULE=auto' >> ~/.bashrc
 source ~/.bashrc
 
-echo -e "\nSetting up DN interface (eth0) on host"
+echo -e "\nSetting up DN interface (eth1) on host"
 sudo sysctl -w net.ipv4.ip_forward=1
-sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+sudo iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE
 sudo iptables -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1400
 sudo systemctl stop ufw
 

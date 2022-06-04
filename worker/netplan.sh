@@ -8,14 +8,30 @@ NETPLAN_CONFIG=/etc/netplan/50-cloud-init.yaml
 
 sudo cp $NETPLAN_CONFIG $NETPLAN_CONFIG.backup
 
-#replace every interface name (and set-name field) with signle string
-sudo yq e -i '.network.ethernets |= with_entries(.key = "TO_BE_REPLACED_KEY")' $NETPLAN_CONFIG
-sudo yq e -i '.network.ethernets |= with_entries(.value.set-name = "TO_BE_REPLACED_VALUE_SET_NAME")' $NETPLAN_CONFIG
+#rename first interface to eth0
+sudo yq e -i '.network.ethernets |= with_entries(.key = "eth0")' $NETPLAN_CONFIG
+sudo yq e -i '.network.ethernets |= with_entries(.value.set-name = "eth0")' $NETPLAN_CONFIG
 
-#replace all "TO_BE_REPLACED..." strings with "eth0,eth1,eth2.." values
-sudo awk -i inplace 'sub("TO_BE_REPLACED_KEY","eth"cnt+0, $0){cnt++}1' $NETPLAN_CONFIG
-sudo awk -i inplace 'sub("TO_BE_REPLACED_VALUE_SET_NAME","eth"cnt+0, $0){cnt++}1' $NETPLAN_CONFIG
+#rename ens5 interface to eth1 (it does not exist in netplan so here we add it)
+MAC_ADDRESS=$(ip -brief link show | grep ens5 | awk '{print $3;}')
+
+sudo yq e -i '.network.ethernets.eth1.dhcp4 |= true' /etc/netplan/50-cloud-init.yaml
+sudo yq e -i ".network.ethernets.eth1.match.macaddress |= \"$MAC_ADDRESS\"" /etc/netplan/50-cloud-init.yaml
+sudo yq e -i '.network.ethernets.eth1.set-name|="eth1"' /etc/netplan/50-cloud-init.yaml
 
 sudo netplan apply /etc/netplan/50-cloud-init.yaml
-
 sleep 3
+
+
+#setup routing for eth1, this is required on GCP
+IP_ADDRESS=192.168.11.100
+NETMASK=255.255.255.255
+CIDR=32
+GATEWAY_ADDRESS=192.168.11.1
+
+sudo ifconfig eth1 $IP_ADDRESS netmask $NETMASK broadcast $IP_ADDRESS mtu 1430
+sudo echo "1 rt1" | sudo tee -a /etc/iproute2/rt_tables
+sudo ip route add $GATEWAY_ADDRESS src $IP_ADDRESS dev eth1 table rt1
+sudo ip route add default via $GATEWAY_ADDRESS dev eth1 table rt1
+sudo ip rule add from $IP_ADDRESS/$CIDR table rt1
+sudo ip rule add to $IP_ADDRESS/$CIDR table rt1
