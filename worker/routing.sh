@@ -1,6 +1,8 @@
 #!/bin/bash
 
-#setup routing for eth1, this is required on GCP
+echo "worker/routing.sh"
+
+#setup routing for eth1, this is required on GCP for any additional interface
 IP_ADDRESS=192.168.11.100
 NETMASK=255.255.255.255
 CIDR=32
