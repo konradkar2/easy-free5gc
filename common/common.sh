@@ -14,3 +14,5 @@ sudo apt install yq -y
 ##install build-essential
 sudo apt install build-essential -y
 
+#to check connectivity
+sudo apt install traceroute -y
