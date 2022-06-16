@@ -36,5 +36,9 @@ sudo containerd config default | sudo tee /etc/containerd/config.toml
 # Restart containerd
 sudo systemctl restart containerd
 
+#disable swap
+sudo swapoff -a
+sudo sed -i '/ swap / s/^/#/' /etc/fstab
+
 
 
