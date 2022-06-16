@@ -2,24 +2,20 @@
 
 echo "netplan.sh"
 
-##modify netplan to suit towards5gs and apply it
+#this creates a netplan that basically renames interfaces provided by arg1, arg2
+#this is done to suit towards-5gs settings
 
-NETPLAN_CONFIG=/etc/netplan/50-cloud-init.yaml
+#eth0
+ETH0_MACADDR=$(ip -o link | grep ether | awk '{ print $2" : "$17 }' | grep $1 | awk '{ print $3} ')
+sudo yq e -i ".network.ethernets.eth0.match.macaddress |= \"$ETH0_MACADDR\"" custom-netplan.yaml
 
-sudo cp $NETPLAN_CONFIG $NETPLAN_CONFIG.backup
+#eth1
+ETH1_MACADDR=$(ip -o link | grep ether | awk '{ print $2" : "$17 }' | grep $2 | awk '{ print $3} ')
+sudo yq e -i ".network.ethernets.eth0.match.macaddress |= \"$ETH1_MACADDR\"" custom-netplan.yaml
 
-#rename first interface to eth0
-sudo yq e -i '.network.ethernets |= with_entries(.key = "eth0")' $NETPLAN_CONFIG
-sudo yq e -i '.network.ethernets |= with_entries(.value.set-name = "eth0")' $NETPLAN_CONFIG
+cp custom-netplan.yaml /etc/netplan/custom-netplan.yaml
 
-#rename ens5 interface to eth1 (it does not exist in netplan so here we add it)
-MAC_ADDRESS=$(ip -brief link show | grep ens5 | awk '{print $3;}')
-
-sudo yq e -i '.network.ethernets.eth1.dhcp4 |= true' /etc/netplan/50-cloud-init.yaml
-sudo yq e -i ".network.ethernets.eth1.match.macaddress |= \"$MAC_ADDRESS\"" /etc/netplan/50-cloud-init.yaml
-sudo yq e -i '.network.ethernets.eth1.set-name|="eth1"' /etc/netplan/50-cloud-init.yaml
-
-sudo netplan apply /etc/netplan/50-cloud-init.yaml
+sudo netplan apply /etc/netplan/custom-netplan.yaml
 sleep 3
 
 

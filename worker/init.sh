@@ -2,7 +2,12 @@
 
 echo "worker/init.sh"
 
-./netplan.sh
+ if [ "$#" -ne 2 ]
+    then
+        echo "Please provide original names of eth0, eth1 interfaces, as they are about to be renamed."
+        exit
+
+./netplan.sh $1 $2
 
 ./routing.sh
 
