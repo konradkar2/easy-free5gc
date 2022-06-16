@@ -1,0 +1,13 @@
+network:
+  ethernets:
+    eth0:
+      dhcp4: true
+      match:
+        macaddress: "tobereplaced"
+      set-name: eth0
+    eth1:
+      dhcp4: true
+      match:
+        macaddress: "tobereplaced"
+      set-name: eth1
+  version: 2
