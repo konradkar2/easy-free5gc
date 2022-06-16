@@ -2,10 +2,10 @@
 
 setup_n6network(){
     yq e -i '.global.n6network.masterIf|="eth1"' values.yaml
-    yq e -i '.global.n6network.subnetIP|="192.168.11.0"' values.yaml
+    yq e -i '.global.n6network.subnetIP|="10.73.4.0"' values.yaml
     yq e -i '.global.n6network.cidr|=24' values.yaml
-    yq e -i '.global.n6network.gatewayIP|="192.168.11.1"' values.yaml
-    yq e -i '.global.n6network.excludeIP|="192.168.11.254"' values.yaml
+    yq e -i '.global.n6network.gatewayIP|="10.73.4.1"' values.yaml
+    yq e -i '.global.n6network.excludeIP|="10.73.4.254"' values.yaml
 }
 
 echo "controller/free5gc-setup.sh"
@@ -17,7 +17,7 @@ setup_n6network
 cd charts/free5gc-upf
 setup_n6network
 
-yq e -i '.upf.n6if.ipAddress|="192.168.11.101"' values.yaml
+yq e -i '.upf.n6if.ipAddress|="10.73.4.222"' values.yaml
 
 
 cd $HOME/towards5gs-helm/charts/
