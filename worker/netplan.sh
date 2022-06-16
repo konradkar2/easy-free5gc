@@ -13,7 +13,7 @@ sudo yq e -i ".network.ethernets.eth0.match.macaddress |= \"$ETH0_MACADDR\"" cus
 ETH1_MACADDR=$(ip -o link | grep ether | awk '{ print $2" : "$17 }' | grep $2 | awk '{ print $3} ')
 sudo yq e -i ".network.ethernets.eth0.match.macaddress |= \"$ETH1_MACADDR\"" custom-netplan.yaml
 
-cp custom-netplan.yaml /etc/netplan/custom-netplan.yaml
+sudo cp custom-netplan.yaml /etc/netplan/custom-netplan.yaml
 
 sudo netplan apply /etc/netplan/custom-netplan.yaml
 sleep 3
