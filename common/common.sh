@@ -3,7 +3,8 @@
 echo "common/common.sh"
 
 mkdir $HOME/Download
-mkdir /var/free5gc/kubedata
+sudo mkdir -p /var/free5gc/kubedata
+sudo chown $USER /var/free5gc/kubedata
 
 ##install yq - for yaml files manipulation
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
