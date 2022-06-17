@@ -11,12 +11,12 @@ spec:
   - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   local:
-    path: /home/free5gc-user/kubedata
+    path: /var/free5gc/kubedata
   nodeAffinity:
     required:
       nodeSelectorTerms:
       - matchExpressions:
-        - key: kubernetes.io/hostname
+        - key: kubernetes.io/os
           operator: In
           values:
-          - worker
+          - linux
