@@ -20,6 +20,6 @@ sleep 3
 
 #for some reason needs to be done twice
 sudo netplan apply /etc/netplan/custom-netplan.yaml
-sleep 3
+sleep 10
 
 
