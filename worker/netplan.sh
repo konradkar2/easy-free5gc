@@ -18,4 +18,8 @@ sudo cp custom-netplan.yaml /etc/netplan/custom-netplan.yaml
 sudo netplan apply /etc/netplan/custom-netplan.yaml
 sleep 3
 
+#for some reason needs to be done twice
+sudo netplan apply /etc/netplan/custom-netplan.yaml
+sleep 3
+
 
